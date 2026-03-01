@@ -5,7 +5,7 @@ import { projectsRouter } from "./routes/projects.js";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173" })); // Permitir solo desde el frontend local
 app.use(express.json());
 app.use("/workers", workersRouter);
 app.use("/projects", projectsRouter);
