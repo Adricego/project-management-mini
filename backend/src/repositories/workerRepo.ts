@@ -1,3 +1,4 @@
+import { clear } from "node:console";
 import type { Worker } from "../models/worker.js";
 
 const workers = new Map<string, Worker>();
@@ -20,5 +21,10 @@ export const workerRepo = {
 
     list(): Worker[] {
         return Array.from(workers.values());
+    },
+    
+    clear() {
+        workers.clear();
+        counter = 1;
     }
 };

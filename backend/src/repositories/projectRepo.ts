@@ -1,3 +1,4 @@
+import { clear } from "node:console";
 import type { Project } from "../models/project.js";
 
 const projects = new Map<string, Project>();
@@ -25,5 +26,10 @@ export const projectRepo = {
 
     list(): Project[] {
         return Array.from(projects.values());
+    },
+
+    clear() {
+        projects.clear();
+        counter = 1;
     }
 };

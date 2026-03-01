@@ -2,13 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Card } from "./components/Card";
 import { Button, Input, Select } from "./components/ui";
 import { createWorker, listWorkers, type Seniority, type Worker } from "./api/workers";
-import {
-  assignWorker,
-  createProject,
-  listProjectsWithWorkers,
-  type ProjectWithWorkers
-} from "./api/projects";
-
+import { assignWorker, createProject, listProjectsWithWorkers, type ProjectWithWorkers} from "./api/projects";
+import { resetDemo } from "./api/admin";
 function formatDateRange(startDate: string, endDate: string) {
   return `${startDate} → ${endDate}`;
 }
@@ -117,9 +112,34 @@ export default function App() {
               Create workers, create projects, assign workers to projects, and list projects with assigned workers.
             </p>
           </div>
-          <Button type="button" onClick={() => refreshAll()} disabled={loading}>
-            Refresh
-          </Button>
+            <button
+              type="button"
+              onClick={async () => {
+                const ok = confirm("This will clear all in-memory data. Continue?");
+                if (!ok) return;
+
+                setLoading(true);
+                setError(null);
+                try {
+                  await resetDemo();
+                  setSelectedProjectId("");
+                  setSelectedWorkerId("");
+                  await refreshAll();
+                } catch (e) {
+                  setError(e instanceof Error ? e.message : "Unknown error");
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              disabled={loading}
+              className="inline-flex items-center justify-center rounded-xl bg-white px-4 py-2 text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50 disabled:opacity-60"
+            >
+              Reset demo
+            </button>
+
+            <Button type="button" onClick={() => refreshAll()} disabled={loading}>
+              Refresh
+            </Button>
         </header>
 
         {error && (

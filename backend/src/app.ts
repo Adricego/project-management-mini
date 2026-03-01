@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { workersRouter } from "./routes/workers.js";
 import { projectsRouter } from "./routes/projects.js";
+import { adminRouter } from "./routes/admin.js";
 
 const app = express();
 
@@ -9,6 +10,7 @@ app.use(cors({ origin: "http://localhost:5173" })); // Permitir solo desde el fr
 app.use(express.json());
 app.use("/workers", workersRouter);
 app.use("/projects", projectsRouter);
+app.use("/admin", adminRouter);
 
 app.get("/health", (_req, res) => {
     res.json({ ok: true });
