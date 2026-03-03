@@ -14,6 +14,13 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [success, setSuccess] = useState<string | null>(null);
+
+  function showSuccess(message: string) {
+    setSuccess(message);
+    setTimeout(() => setSuccess(null), 2500);
+  }  
+
   // Worker form
   const [wName, setWName] = useState("");
   const [wRole, setWRole] = useState("");
@@ -31,6 +38,14 @@ export default function App() {
 
   const canAssign = useMemo(() => selectedProjectId && selectedWorkerId, [selectedProjectId, selectedWorkerId]);
 
+  const canCreateWorker = wName.trim().length > 0 && wRole.trim().length > 0;
+  
+  const canCreateProject =
+    pName.trim().length > 0 &&
+    pClient.trim().length > 0 &&
+    pStart.trim().length > 0 &&
+    pEnd.trim().length > 0;
+  
   async function refreshAll() {
     setError(null);
     const [w, p] = await Promise.all([listWorkers(), listProjectsWithWorkers()]);
@@ -57,6 +72,7 @@ export default function App() {
 
     try {
       await createWorker({ name: wName, role: wRole, seniority: wSeniority });
+      showSuccess("Worker created");
       setWName("");
       setWRole("");
       setWSeniority("junior");
@@ -75,6 +91,7 @@ export default function App() {
 
     try {
       await createProject({ name: pName, client: pClient, startDate: pStart, endDate: pEnd });
+      showSuccess("Project created");
       setPName("");
       setPClient("");
       await refreshAll();
@@ -94,6 +111,7 @@ export default function App() {
 
     try {
       await assignWorker(selectedProjectId, selectedWorkerId);
+      showSuccess("Worker assigned to project");
       await refreshAll();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unknown error");
@@ -122,6 +140,7 @@ export default function App() {
                 setError(null);
                 try {
                   await resetDemo();
+                  showSuccess("Demo data cleared");
                   setSelectedProjectId("");
                   setSelectedWorkerId("");
                   await refreshAll();
@@ -149,6 +168,13 @@ export default function App() {
           </div>
         )}
 
+        {success && (
+          <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-900">
+            <div className="font-semibold">Done</div>
+            <div className="mt-1 text-sm">{success}</div>
+          </div>
+        )}
+
         <div className="grid gap-6 lg:grid-cols-3">
           <Card title="Create Worker">
             <form onSubmit={onCreateWorker} className="space-y-3">
@@ -168,7 +194,7 @@ export default function App() {
                   <option value="senior">senior</option>
                 </Select>
               </div>
-              <Button disabled={loading} type="submit">
+              <Button disabled={loading || !canCreateWorker} type="submit">
                 Create
               </Button>
             </form>
@@ -194,7 +220,7 @@ export default function App() {
                   <Input value={pEnd} onChange={(e) => setPEnd(e.target.value)} placeholder="YYYY-MM-DD" />
                 </div>
               </div>
-              <Button disabled={loading} type="submit">
+              <Button disabled={loading || !canCreateProject} type="submit">
                 Create
               </Button>
             </form>
