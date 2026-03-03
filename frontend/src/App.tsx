@@ -130,6 +130,16 @@ export default function App() {
               Create workers, create projects, assign workers to projects, and list projects with assigned workers.
             </p>
           </div>
+          
+          <div className="mt-3 flex flex-wrap gap-2">
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-200">
+              {workers.length} worker{workers.length === 1 ? "" : "s"}
+            </span>
+            <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-slate-700 ring-1 ring-slate-200">
+              {projects.length} project{projects.length === 1 ? "" : "s"}
+            </span>
+          </div>
+          
             <button
               type="button"
               onClick={async () => {
