@@ -1,4 +1,4 @@
-import type { CreateProjectInput, Project } from "../models/project.ts";
+import type { CreateProjectInput, Project } from "../models/project.js";
 import { projectRepo } from "../repositories/projectRepo.js";
 import { workerRepo } from "../repositories/workerRepo.js";
 
