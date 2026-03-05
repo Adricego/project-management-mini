@@ -9,6 +9,10 @@ Demo fullstack para gestionar **proyectos** y **trabajadores**:
 
 Este proyecto fue desarrollado como prueba técnica junior fullstack, priorizando estructura clara, decisiones justificadas y un flujo end-to-end completo.
 
+## Video explicativo (máx. 5 min)
+
+- Enlace: [Ver video explicativo](https://youtu.be/vu1kdRMyybo)
+
 ## Stack Tecnológico
 
 ### Backend
